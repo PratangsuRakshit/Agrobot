@@ -1,4 +1,4 @@
-# Agrobot 
+# Agrobot
 
 ## What's Agrobot?
 Agrobot is a Python project using Ursina Engine for the GUI. It checks the current demand for crops using Google Trends and predicts future demand with sklearn's Linear Regression.
@@ -20,6 +20,8 @@ Agrobot is a Python project using Ursina Engine for the GUI. It checks the curre
    python main.py
    ```
 
+4. **Explore the GUI:**
+   Open your web browser and go to `http://localhost:8000` to interact with Agrobot.
 
 ## Using Agrobot
 1. **Check Current Demand:**
@@ -31,7 +33,14 @@ Agrobot is a Python project using Ursina Engine for the GUI. It checks the curre
 ## How to Contribute
 Got ideas? We'd love your help. Open an issue or pull request on GitHub.
 
-## WHat I used
-- Python
-- Ursina Engine
-- sklearn
+## What I Used
+- **Python:** The backbone of Agrobot, offering versatility and ease of use.
+- **Ursina Engine:** Powers the graphical user interface, making Agrobot interactive and user-friendly.
+- **sklearn:** Employs the Linear Regression model for predicting future crop demand.
+- **pandas:** Handles data manipulation and analysis efficiently.
+- **numpy:** Adds numerical computing capabilities to the project.
+- **urllib3, pytrends, requests:** Essential for fetching and handling data from Google Trends.
+- **os, json:** Facilitates interaction with the operating system and handling JSON data.
+
+## License
+MIT License - see [LICENSE](LICENSE) for details.
