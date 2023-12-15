@@ -1,0 +1,25 @@
+# web app
+
+branch - [dev_debasish]
+
+# ML Part @Pratangsu 
+
+branch - [dev_pratangsu]
+
+[ 17-12-23 ]
+Retriever -> Get the data from the google API for last 10 years 
+
+prepare the data for training -> get the data as pandas dataframe !
+
+[ optional ]
+clean the data -> use pandas to clean the data
+
+create a training / testing split -> 90% - 10% split 
+
+define few ML models regression models -> XGBoost, TabNet, SVR, RandomForest Regressor
+
+define some error matrices -> MAE, MSE, RMSE, R2
+
+
+# backend API  
+
