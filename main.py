@@ -1,3 +1,4 @@
+import numpy as np
 from ursina import *
 import os
 
@@ -15,6 +16,30 @@ from urllib.parse import quote
 app = Ursina()
 
 BASE_TRENDS_URL = 'https://trends.google.com/trends'
+headers = {
+    'authority': 'trends.google.com',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept-language': 'en-IN,en;q=0.9,hi;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+    'cache-control': 'max-age=0',
+    'cookie': '__utma=10102256.384823962.1700824331.1700824635.1700824635.1; __utmc=10102256; __utmz=10102256.1700824635.1.1.utmcsr=trends.google.com^|utmccn=(referral)^|utmcmd=referral^|utmcct=/; __utmt=1; __utmb=10102256.3.10.1700824635; CONSENT=YES+IN.en-GB+202007; HSID=A2ANFHdCUw-F30buJ; SSID=ApFtNB8Ldeqoe7RVW; APISID=3anFRKcsZ3NbsSLu/AZwIc5PAFEYklO1F3; SAPISID=Eq3co4qXKOF7ww0d/AapnI0Y9oP7PHBJGM; __Secure-1PAPISID=Eq3co4qXKOF7ww0d/AapnI0Y9oP7PHBJGM; __Secure-3PAPISID=Eq3co4qXKOF7ww0d/AapnI0Y9oP7PHBJGM; SID=cggC0J0q0unbq2Yegbq_vzXGEdXVe7f5RnZQIevHadHmfwVPPmA10ii4rHWZKzGn0IZBAQ.; __Secure-1PSID=cggC0J0q0unbq2Yegbq_vzXGEdXVe7f5RnZQIevHadHmfwVP--dkSJC0gMMi4LqB54oDdw.; __Secure-3PSID=cggC0J0q0unbq2Yegbq_vzXGEdXVe7f5RnZQIevHadHmfwVPAqN6m9rj7zugTDHE8VmijA.; SEARCH_SAMESITE=CgQIz5kB; 1P_JAR=2023-11-24-11; AEC=Ackid1Se0DgOtt_yAP2t6bUqvhF-wPgYPo6XfEwEw1MxMpPQ28dX7qoobw; NID=511=Z7FRUVN_v_XPhOqBCJ0vkMo-PFjjQD8q7SaPCXdzuh2h1Q6XPTd-fmrdw6b83cMn88R13gP65sf4pjIEBpE7ObtpjwNMv-gSGCXD1fZ6o56qQnn79zFuVccUDvtusyIHQbq2wrCjd6juwTo1po5YqwJ9oSxbWRCgE3x1V-ex53g8WOKsxcjV6pAwsuQLUmkMi6GecG_ZJjh93r1T45gEMEro3hmyfzVNiTKIx-auJF1J03ovlH6UW_eQlSBywMd8ZDr_h8G6TRjkCuAW3wTkKs5lzSBrUpK-FyJwfAhn6hz115g_TZk38ooV8F_693U6S2g7ryA5jIqEXeDeFhTxjXm50ai8RBzvdx1B2DWZ2ptz03z3lBwvD2Mr1momzClhTwTe5Wcptp_GHSIq1uXTcc-p4y0NFBC_kFt6eRGOnYQ2vm2_8wJqafuIjMvJCF9MOtOZ7UA1Wt2Si37gheWKE7kYSNeSJcaLJ_u8I54VmjDiY4h2QhlKq-taedtBPNsaEp8_vKrnETf7qMo; _gid=GA1.3.1661211246.1700824334; OTZ=7308672_34_34__34_; _gat_gtag_UA_4401283=1; _ga=GA1.3.384823962.1700824331; _ga_VWZPXDNJJB=GS1.1.1700824330.1.1.1700824934.0.0.0; SIDCC=ACA-OxPxBYvLMB8wBNPTpQaE9mhd412ypgSPN9u_P5y0tzC4eoAUMd9LtKadz8hXulaqojpHhiI; __Secure-1PSIDCC=ACA-OxPkT6O08ncEiiQbuq2W4WppH0DBQfKxQLoQUPRIdkxytA_YuTRhmObe8EzkPySdo_4i_g; __Secure-3PSIDCC=ACA-OxPkh1GaSJHR8YuI2PtjkQDuC0cjlzDfarqg2tYRLUSupq7uXEEKCqtT88jocUy7QyVMmA',
+    'sec-ch-ua': '^\\^Not_A',
+    'sec-ch-ua-arch': '^\\^^\\^',
+    'sec-ch-ua-bitness': '^\\^64^\\^',
+    'sec-ch-ua-full-version': '^\\^109.0.5414.120^\\^',
+    'sec-ch-ua-full-version-list': '^\\^Not_A',
+    'sec-ch-ua-mobile': '?1',
+    'sec-ch-ua-model': '^\\^Nexus',
+    'sec-ch-ua-platform': '^\\^Android^\\^',
+    'sec-ch-ua-platform-version': '^\\^6.0^\\^',
+    'sec-ch-ua-wow64': '?0',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'none',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Mobile Safari/537.36',
+    'x-client-data': 'CI62yQEIpbbJAQipncoBCJLpygEIk6HLAQiFoM0BCNy9zQE=',
+}
 
 font = 'fonta.ttf'
 
@@ -42,6 +67,7 @@ class TrendReq(object):
         """
         Initialize default values for params
         """
+
         # google rate limit
         self.google_rl = 'You have reached your quota limit. Please try again later.'
         self.results = None
@@ -64,7 +90,7 @@ class TrendReq(object):
         self.related_topics_widget_list = list()
         self.related_queries_widget_list = list()
 
-        self.headers = {'accept-language': self.hl}
+        self.headers = headers
         self.headers.update(self.requests_args.pop('headers', {}))
 
     def GetGoogleCookie(self):
@@ -159,7 +185,7 @@ class TrendReq(object):
             return json.loads(content)
         else:
             if response.status_code == status_codes.codes.too_many_requests:
-                raise exceptions.TooManyRequestsError.from_response(response)
+                pass
             raise exceptions.ResponseError.from_response(response)
 
     def build_payload(self, kw_list, cat=0, timeframe='today 5-y', geo='',
@@ -630,39 +656,152 @@ def forecasting_screen():
 def data_forecasting():
     global data, keyword_list, f_text
 
+    from sklearn.linear_model import LinearRegression
+
+    numbers = np.array([])
+    years = np.array([])
+    future_years = np.array([])
+
+    # Initializing keyword_list with the forecasting product
     keyword_list = [forecasting_product]
+    keyword_list = [forecasting_product.text]
+
+    change = 0
+    year_sequence = 5
+    d = []
+
     a = str(forecasting_timeframe_input.text)
     b = []
+    for char in a:
+        b.append(char)
 
-    for char in a: b.append(char)
-    a = ''
+    c = f"{b[11]}{b[12]}{b[13]}{b[14]}"
+    future_years = np.append(years, int(c))
+    future_years = future_years.reshape(-1, 1)
 
-    for i in range(b.__len__()):
-        if i == 2:
-            b[i+1] = "1"
-        if i == 13:
-            b[i+1] = "1"
-        if a == '':
-            a = b[i]
-        else:
+    while year_sequence != 0:
+        # Extracting the text from the 'forecasting_timeframe_input' and manipulating it
+        a = str(forecasting_timeframe_input.text)
+        b = []
+
+        # Splitting the characters in the text and modifying it
+        for char in a:
+            b.append(char)
+
+        a = ''
+
+        for i in range(b.__len__()):
+            if i == 2:
+                b[i+1] = int(b[i+1])
+                if int(b[i]) > 1:
+                    change = int(b[i+12]) - b[i+1]
+                    while b[i+1] > 3:
+                        b[i+1] -= 1
+                b[i+1] -= year_sequence
+                if b[i+1] < 0:
+                    b[i+1] += 10
+                    b[i] = int(b[i]) - 1
+            elif i == 13:
+                b[i+1] = int(b[i+1])
+                if int(b[i]) > 1:
+                    while change < b[i+1] - 1 - b[i-10]:
+                        b[i+1] -= 1
+                b[i+1] -= year_sequence
+                if b[i+1] < 0:
+                    b[i+1] += 10
+                    b[i] = int(b[i-1]) - 1
+
             a = f"{a}{b[i]}"
 
-    forecasting_timeframe = a
+        # Setting the modified timeframe to 'forecasting_timeframe'
+        forecasting_timeframe = a
+        year_current = f"{b[0]}{b[1]}{b[2]}{b[3]}"
+        if year_sequence - 3 <= 0:
+            years = np.append(years, int(year_current))
 
-    keyword_list = [forecasting_product.text]
-    pytrends.build_payload(keyword_list,
-                           cat=0, timeframe=forecasting_timeframe, geo="IN")
-    data = data_setting(pytrends.interest_by_region(resolution='COUNTRY',
-                                                    inc_low_vol=True, inc_geo_code=False))
+        # Building the payload for Google Trends data using pytrends
+        pytrends.build_payload(keyword_list,
+                               cat=0, timeframe=forecasting_timeframe, geo="IN")
+
+        # Fetching interest data by region and setting 'data' using 'data_setting' function
+        d.append(pytrends.interest_by_region(resolution='COUNTRY',inc_low_vol=False, inc_geo_code=False))
+        year_sequence -= 1
+
+    years = years.reshape(-1, 1)
+
+    # Parse the data and create separate NumPy arrays for each state
+    state_numbers = {}
+
+    # Split the data into lines
+    d = "{} {} {}".format(*d)
+    lines = d.strip().split('\n')
+
+    # Skip the first line as it contains the column name
+    for line in lines[1:]:
+        # Split each line into words
+        words = line.split()
+
+        # Skip lines that don't contain numeric values
+        if not words[-1].isdigit():
+            continue
+
+        # The state name is the combination of words until the first number
+        state_name = ' '.join(words[:-1])
+        # The number is the last word
+        number = int(words[-1])
+
+        # Check if the state_name is already a key in the dictionary
+        if state_name in state_numbers:
+            # If yes, append the number to the existing array
+            state_numbers[state_name].append(number)
+        else:
+            # If no, create a new array with the number
+            state_numbers[state_name] = [number]
+
+    # Convert the lists to NumPy arrays
+    state_arrays = {state: np.array(numbers, dtype=int) for state, numbers in state_numbers.items()}
+
+    predictions = {}
+    print(years)
+
+    for state, values in state_arrays.items():
+        try:
+            model = LinearRegression()
+            model.fit(years, values)
+
+            # Make predictions for the future year
+            future_predictions = model.predict(future_years)
+            predictions[state] = future_predictions[0]
+        except:
+            pass
+
+    print_list = ""
+    # Print the predictions for each state
+    output_string_rice = f"\n{'': <30}Rice\n{'geoName': <30}{'2023': <5}\n{'-' * 35}"
+    for state, prediction in predictions.items():
+        if prediction < 0:
+            prediction = str(prediction)
+            prediction = prediction[1:]
+            prediction = float(prediction)
+        if prediction > 100:
+            prediction = 100
+
+        prediction = int(round(prediction))
+        output_string_rice += f"\n{state: <30}{int(prediction)}"
+
+    data = data_setting(output_string_rice)
+
+    # Updating 'f_text' with the new 'data'
     f_text.text = data
 
 pytrends = TrendReq(hl='en-US', tz=91, timeout=(10,25),
-                    retries=2, backoff_factor=0.1,
+                    retries=20, backoff_factor=0.1,
                     requests_args={'verify':False})
 text = Text('', position=(-0.5, 0.25), font=font)
 
 def data_setting(value):
     value = str(value)
+    print(value)
 
     a = list(value.splitlines())
     a[0] = f"States & UTs                   "
@@ -695,9 +834,6 @@ def data_setting(value):
                 data = f'{data}%<default>    {a[i]}%<default>'
 
     text.text = data
-
-    print(data)
-
     return data
 
 
@@ -707,7 +843,7 @@ time_interval = 'now 7-d'
 
 # build the payload
 pytrends.build_payload(kw_list=keyword_list, cat=0, timeframe=time_interval, geo="IN")
-data = data_setting(pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=True, inc_geo_code=False))
+data = data_setting(pytrends.interest_by_region(resolution='COUNTRY', inc_low_vol=False, inc_geo_code=False))
 search = InputField(position=(-0.05, 0.4), character_limit=22)
 search_icon = Button(icon='search.png', scale=0.05,
                      position=(0.25, 0.4), on_click=search_enter)
@@ -761,7 +897,7 @@ f_text = Text('', position=(-0.5, 0.1),
               parent=forecasting_parent, font=font)
 
 import urllib3
-urllib3.disable_warnings()
+cert_reqs = 'CERT_NONE'
 
 BackBtn()
 app.run()
